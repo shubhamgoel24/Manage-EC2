@@ -4,9 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: 'start or stop'
+        description: 'Choose an action'
         required: true
         default: 'start'
+        type: choice
+        options:
+          - start
+          - stop
 
 jobs:
   manage-ec2:
