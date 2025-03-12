@@ -43,7 +43,7 @@ jobs:
           if [ "${{ github.event.inputs.action }}" == "start" ]; then
             STATUS="started"
           fi
-          RESPONSE=$(cat response.json | jq -c .)
+          RESPONSE=$(cat response.json | jq -c . | sed 's/"/\\"/g')
           curl -H "Content-Type: application/json" \
                -X POST \
                -d "{\"content\": \"EC2 Instance ${{ vars.EC2_ID }} has been **$STATUS**.\nResponse: \n\`\`\`json\n$RESPONSE\n\`\`\`\"}" \
