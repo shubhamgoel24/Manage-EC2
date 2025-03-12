@@ -43,8 +43,15 @@ jobs:
           if [ "${{ github.event.inputs.action }}" == "start" ]; then
             STATUS="started"
           fi
+          
+          # Get the GitHub actor (who triggered the workflow)
+          ACTOR="${{ github.actor }}"
+          
+          # Read and format the response
           RESPONSE=$(cat response.json | jq -c . | sed 's/"/\\"/g')
+
+          # Send notification to Discord
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d "{\"content\": \"EC2 Instance ${{ vars.EC2_ID }} has been **$STATUS**.\nResponse: \n\`\`\`json\n$RESPONSE\n\`\`\`\"}" \
+               -d "{\"content\": \"👤 **Triggered by:** ${ACTOR}\n🖥 **EC2 Instance:** ${{ vars.EC2_ID }}\n🚀 **Action:** $STATUS\n📜 **Response:** \n\`\`\`json\n$RESPONSE\n\`\`\`\"}" \
                ${{ vars.DISCORD_WEBHOOK_URL }}
