@@ -28,12 +28,14 @@ jobs:
         run: |
           RESPONSE=$(aws ec2 start-instances --instance-ids ${{ vars.EC2_ID }} --output json)
           echo "$RESPONSE" | jq 'walk(if type == "object" and has("InstanceId") then .InstanceId = "****HIDDEN****" else . end)'
+          echo "$RESPONSE" > response.json
 
       - name: Stop EC2 Instance
         if: ${{ github.event.inputs.action == 'stop' }}
         run: |
           RESPONSE=$(aws ec2 stop-instances --instance-ids ${{ vars.EC2_ID }} --output json)
           echo "$RESPONSE" | jq 'walk(if type == "object" and has("InstanceId") then .InstanceId = "****HIDDEN****" else . end)'
+          echo "$RESPONSE" > response.json
 
       - name: Send Notification to Discord
         run: |
@@ -43,5 +45,5 @@ jobs:
           fi
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d "{\"content\": \"EC2 Instance ${{ vars.EC2_ID }} has been **$STATUS**.\"}" \
+               -d "{\"content\": \"EC2 Instance ${{ vars.EC2_ID }} has been **$STATUS**.\nResponse: \n\`\`\`json\n$RESPONSE\n\`\`\`\"}" \
                ${{ vars.DISCORD_WEBHOOK_URL }}
