@@ -32,3 +32,14 @@ jobs:
         if: ${{ github.event.inputs.action == 'stop' }}
         run: |
           aws ec2 stop-instances --instance-ids ${{ vars.EC2_ID }}
+
+      - name: Send Notification to Discord
+        run: |
+          STATUS="stopped"
+          if [ "${{ github.event.inputs.action }}" == "start" ]; then
+            STATUS="started"
+          fi
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "{\"content\": \"EC2 Instance ${{ vars.EC2_ID }} has been **$STATUS**.\"}" \
+               ${{ vars.DISCORD_WEBHOOK_URL }}
