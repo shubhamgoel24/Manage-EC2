@@ -26,12 +26,14 @@ jobs:
       - name: Start EC2 Instance
         if: ${{ github.event.inputs.action == 'start' }}
         run: |
-          aws ec2 start-instances --instance-ids ${{ vars.EC2_ID }}
+          RESPONSE=$(aws ec2 start-instances --instance-ids ${{ vars.EC2_ID }} --output json)
+          echo "$RESPONSE" | jq 'walk(if type == "object" and has("InstanceId") then .InstanceId = "****HIDDEN****" else . end)'
 
       - name: Stop EC2 Instance
         if: ${{ github.event.inputs.action == 'stop' }}
         run: |
-          aws ec2 stop-instances --instance-ids ${{ vars.EC2_ID }}
+          RESPONSE=$(aws ec2 stop-instances --instance-ids ${{ vars.EC2_ID }} --output json)
+          echo "$RESPONSE" | jq 'walk(if type == "object" and has("InstanceId") then .InstanceId = "****HIDDEN****" else . end)'
 
       - name: Send Notification to Discord
         run: |
