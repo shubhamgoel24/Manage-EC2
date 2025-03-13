@@ -15,16 +15,12 @@ on:
 jobs:
   manage-ec2:
     runs-on: ubuntu-latest
-    env:
-      EC2_ID: ${{ vars.EC2_ID }}
-      EC2_REGION: ${{ vars.EC2_REGION }}
-      DISCORD_WEBHOOK_URL: ${{ vars.DISCORD_WEBHOOK_URL }}
     steps:
       - name: Mask Variables
         run: |
-          echo "::add-mask::$EC2_ID"
-          echo "::add-mask::$EC2_REGION"
-          echo "::add-mask::$DISCORD_WEBHOOK_URL"
+          echo "::add-mask::${{ vars.EC2_ID }}"
+          echo "::add-mask::${{ vars.EC2_REGION }}"
+          echo "::add-mask::${{ vars.DISCORD_WEBHOOK_URL }}"
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
