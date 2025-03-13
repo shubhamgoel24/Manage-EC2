@@ -27,13 +27,15 @@ jobs:
         if: ${{ github.event.inputs.action == 'start' }}
         run: |
           RESPONSE=$(aws ec2 start-instances --instance-ids ${{ vars.EC2_ID }} --output json)
-          echo "$RESPONSE" | jq 'walk(if type == "object" and has("InstanceId") then .InstanceId = "****HIDDEN****" else . end)' | jq . > response.json
+          echo "$RESPONSE" | jq 'walk(if type == "object" and has("InstanceId") then .InstanceId = "****HIDDEN****" else . end)'
+          echo "$RESPONSE" > response.json
 
       - name: Stop EC2 Instance
         if: ${{ github.event.inputs.action == 'stop' }}
         run: |
           RESPONSE=$(aws ec2 stop-instances --instance-ids ${{ vars.EC2_ID }} --output json)
-          echo "$RESPONSE" | jq 'walk(if type == "object" and has("InstanceId") then .InstanceId = "****HIDDEN****" else . end)' | jq . > response.json
+          echo "$RESPONSE" | jq 'walk(if type == "object" and has("InstanceId") then .InstanceId = "****HIDDEN****" else . end)'
+          echo "$RESPONSE" > response.json
 
       - name: Send Notification to Discord
         run: |
@@ -46,7 +48,7 @@ jobs:
           ACTOR="${{ github.actor }}"
           
           # Read and format the response
-          RESPONSE=$(cat response.json | jq . | sed 's/"/\\"/g')
+          RESPONSE=$(cat response.json | jq -c . | sed 's/"/\\"/g')
 
           # Send notification to Discord
           curl -H "Content-Type: application/json" \
