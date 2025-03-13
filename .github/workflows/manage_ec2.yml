@@ -53,5 +53,5 @@ jobs:
           # Send notification to Discord
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d "{\"content\": \"👤 **Triggered by:** ${ACTOR}\n🖥 **EC2 Instance:** ${{ vars.EC2_ID }}\n🚀 **Action:** $STATUS\n📜 **Response:** \n\`\`\`json\n$RESPONSE\n\`\`\`\"}" \
+               -d "{\"content\": \"@everyone\n👤 **Triggered by:** ${ACTOR}\n🖥 **EC2 Instance:** ${{ vars.EC2_ID }}\n🚀 **Action:** $STATUS\n📜 **Response:** \n\`\`\`json\n$RESPONSE\n\`\`\`\"}" \
                ${{ vars.DISCORD_WEBHOOK_URL }}
