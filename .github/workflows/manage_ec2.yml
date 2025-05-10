@@ -1,5 +1,5 @@
 name: Manage EC2 Instance
-run-name: ${{ github.workflow } - ${{ github.event.inputs.action }}
+run-name: ${{ github.workflow }} - ${{ github.event.inputs.action }}
 
 on:
   workflow_dispatch:
