@@ -1,4 +1,4 @@
-name: Manage EC2 Instance - ${{ github.event.inputs.action }}
+name: Manage EC2 Instance
 
 on:
   workflow_dispatch:
@@ -14,6 +14,7 @@ on:
 
 jobs:
   manage-ec2:
+    name: Instance - ${{ github.event.inputs.action }}
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS Credentials
