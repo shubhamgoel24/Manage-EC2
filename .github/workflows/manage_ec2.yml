@@ -1,4 +1,4 @@
-name: Manage EC2 Instance
+name: Manage EC2 Instance - ${{ github.event.inputs.action }}
 
 on:
   workflow_dispatch:
